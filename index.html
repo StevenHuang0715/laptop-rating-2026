@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 筆電評分 - 表頭吸頂響應排序版</title>
+    <title>2026 筆電規格評分推薦表</title>
     <style>
         /* 基礎全域設定 */
         body { font-family: "Microsoft JhengHei", sans-serif; background-color: #f3f4f6; padding: 20px; color: #1f2937; font-size: 16px; margin: 0; }
@@ -16,7 +16,7 @@
         .filter-group { display: flex; align-items: center; gap: 12px; font-weight: bold; font-size: 1.1rem; }
         .filter-group input { padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; width: 130px; font-size: 1rem; }
         
-        /* 桌機排除按鈕樣式 (與預算同一橫列) */
+        /* 桌機排除按鈕樣式 */
         #toggleFilterBtn { padding: 10px 16px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; border: none; color: white; background-color: #dc2626; transition: background 0.2s; margin-left: 10px; }
 
         .weight-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; font-size: 1.1rem; }
@@ -29,7 +29,7 @@
         .val-text { color: #2563eb; background: #dbeafe; padding: 2px 8px; border-radius: 10px; font-weight: 900; }
         .slider-item input[type="range"] { width: 100%; cursor: pointer; }
         
-        /* 📱 手機專用排序區塊 (預設桌機隱藏) */
+        /* 📱 手機專用排序區塊 */
         .sort-dashboard { display: none; background: #f8fafc; padding: 15px 20px; border-radius: 10px; border: 1px solid #e2e8f0; margin-top: 15px; }
         .sort-header { font-weight: bold; font-size: 1.05rem; color: #334155; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
         .sort-btn-group { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -40,11 +40,10 @@
         .sort-btn.active-desc { background: #eff6ff; color: #2563eb; border-color: #3b82f6; font-weight: 900; }
         .sort-btn.active-desc::after { content: " ▼"; }
 
-        /* 💻 桌機專用：進階直覺表頭排序樣式 */
+        /* 桌機表格配置與表頭吸頂 */
         .table-wrapper { background: #fff; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         
-        /* 📌 關鍵修正：桌機版頁面下滾時，欄位標題固定在頂端 */
         th { 
             background-color: #1e293b; 
             color: #fff; 
@@ -54,16 +53,12 @@
             font-size: 1.05rem; 
             cursor: pointer; 
             transition: background 0.15s; 
-            position: relative;
-            
-            /* 吸頂核心語法 */
             position: sticky;
             top: 0;
             z-index: 10;
         }
         th:hover { background-color: #334155; }
         
-        /* 表頭排序箭頭視覺提示 */
         th.th-sort-asc::after { content: " ▲"; color: #fbbf24; font-weight: 900; }
         th.th-sort-desc::after { content: " ▼"; color: #fbbf24; font-weight: 900; }
         
@@ -76,7 +71,8 @@
         .status-pass { color: #1f2937; font-weight: bold; font-size: 1.15rem; display: inline-block; } 
         .status-low { color: #fef08a; background-color: #dc2626; padding: 4px 10px; border-radius: 6px; font-weight: 900; display: inline-block; font-size: 1.2rem; } 
         
-        .link { color: #2563eb; text-decoration: none; font-weight: 800; display: block; margin-bottom: 4px; line-height: 1.3; font-size: 1.2rem; }
+        /* 移除超連結樣式，改為精緻的純文字型號名稱 */
+        .prod-name { color: #1e293b; font-weight: 800; display: block; margin-bottom: 4px; line-height: 1.3; font-size: 1.2rem; }
         .price-tag { color: #e11d48; font-weight: 900; font-size: 1.25rem; display: inline-block; margin-bottom: 6px; }
         .ref-text { color: #555d6d; line-height: 1.4; font-size: 0.95rem; font-weight: 500; margin-top: 3px; }
         .total-badge { font-size: 1.4rem; font-weight: 900; background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 10px; display: inline-block; }
@@ -92,7 +88,6 @@
             #toggleFilterBtn { width: 100%; margin-left: 0 !important; margin-top: 5px; text-align: center; padding: 12px; font-size: 1.1rem; }
             .points-badge { text-align: center; font-size: 1.1rem; }
             
-            /* 手機版：開啟獨立排序按鈕特區 */
             .sort-dashboard { display: block; }
             .sort-btn { flex: 1 1 calc(50% - 10px); text-align: center; justify-content: center; padding: 10px; }
 
@@ -154,7 +149,7 @@
 <body>
 
 <div class="container">
-    <h2>💻 推薦筆電規格評分 (2026 表頭吸頂響應排序版)</h2>
+    <h2>💻 推薦筆電規格評分專區</h2>
     
     <div class="dashboard">
         <div class="filter-row">
@@ -218,36 +213,36 @@
 </div>
 
 <script>
-// 精確提取 28 項完整來源資料
+// 核心資料庫：已全數扣除 PChome 連結，且價格部分均已直接加上 2500 元利潤
 const laptopData = [
-    { name: "ASUS ExpertBook 14 AI", price: 33999, url: "https://24h.pchome.com.tw/prod/DHAFKD-A900JM7MB", ssd: "1TB (雙M.2)", screen: "14.0\" FHD+ IPS", s_cpu: 4.8, d_cpu: "R7 8840U (38T)", s_mem: 4.8, d_mem: "32G (可擴64G)", s_port: 4.2, d_port: "1.34kg", s_bat: 4.2, d_bat: "63Wh" },
-    { name: "ASUS Zenbook 14 OLED", price: 34999, url: "https://24h.pchome.com.tw/prod/DHAFUU-A900K0KML", ssd: "512G SSD", screen: "14.0\" WUXGA OLED", s_cpu: 4.5, d_cpu: "R AI 5 430 (50T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.8, d_port: "1.2kg", s_bat: 5.0, d_bat: "75Wh" },
-    { name: "LENOVO Yoga Slim 7i", price: 28618, url: "https://24h.pchome.com.tw/prod/DHBF85-1900JXNBF", ssd: "512G SSD", screen: "14.0\" OLED 600nits", s_cpu: 4.2, d_cpu: "Ultra 5 226V (40T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.8, d_port: "1.19kg", s_bat: 4.7, d_bat: "70Wh" },
-    { name: "ACER Aspire AI 14", price: 34900, url: "https://24h.pchome.com.tw/prod/DHAEIL-A900JHYII", ssd: "1TB SSD", screen: "14.0\" IPS 120Hz", s_cpu: 4.2, d_cpu: "SD X1 (45T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.5, d_port: "1.26kg", s_bat: 4.4, d_bat: "65Wh" },
-    { name: "ACER Swift Lite (1TB/999g)", price: 32900, url: "https://24h.pchome.com.tw/prod/DHAEJA-A900JIYTE", ssd: "1TB (雙M.2)", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Ultra 5-115U", s_mem: 4.8, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", s_bat: 3.3, d_bat: "50Wh" },
-    { name: "ACER Swift 14 (Copilot+)", price: 33618, url: "https://24h.pchome.com.tw/prod/DHAEJ0-A900JB6DV", ssd: "512G SSD", screen: "14.0\" IPS 120Hz", s_cpu: 4.2, d_cpu: "Ultra 5-228V (40T)", s_mem: 4.5, d_mem: "32G (不可擴)", s_port: 4.6, d_port: "1.24kg", s_bat: 4.4, d_bat: "65Wh" },
-    { name: "HP 超品系列 14", price: 24900, url: "https://24h.pchome.com.tw/prod/DHAG4T-A900JTY47", ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 4.2, d_cpu: "Ultra 5-125H", s_mem: 4.2, d_mem: "16G (雙槽可擴)", s_port: 3.5, d_port: "1.4kg", s_bat: 2.7, d_bat: "41Wh" },
-    { name: "DELL 14 (1TB AI)", price: 34999, url: "https://24h.pchome.com.tw/prod/DHAIBA-A900JVF8H", ssd: "1TB SSD", screen: "14.0\" FHD+ WVA", s_cpu: 4.1, d_cpu: "Ultra 5 225U", s_mem: 3.8, d_mem: "16G DDR5", s_port: 3.0, d_port: "1.54kg", s_bat: 2.7, d_bat: "41Wh" },
-    { name: "MSI Modern A14 AI+", price: 29900, url: "https://24h.pchome.com.tw/prod/DHAK89-A900K179H", ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 4.0, d_cpu: "Ryzen AI 5-330", s_mem: 4.2, d_mem: "16G (可擴32G)", s_port: 3.5, d_port: "1.4kg", s_bat: 3.1, d_bat: "46.8Wh" },
-    { name: "ACER Extensa 14", price: 29618, url: "https://24h.pchome.com.tw/prod/DHAEFK-A900J38UG", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.3, d_cpu: "Ultra 7-155H", s_mem: 4.2, d_mem: "16G (雙插槽)", s_port: 3.2, d_port: "1.47kg", s_bat: 3.6, d_bat: "55Wh" },
-    { name: "ACER TravelMate 14 (R5)", price: 30618, url: "https://24h.pchome.com.tw/prod/DHAEFQ-A900IY43X", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "R5 PRO 7535U", s_mem: 4.2, d_mem: "16G (至64G)", s_port: 3.5, d_port: "1.46kg", s_bat: 3.6, d_bat: "53Wh" },
-    { name: "ASUS Vivobook S14 OLED", price: 33999, url: "https://24h.pchome.com.tw/prod/DHAFSX-A900K0KKS", ssd: "512G SSD", screen: "14.0\" WUXGA OLED", s_cpu: 4.2, d_cpu: "Ultra 5 226V (40T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.3, d_port: "1.3kg", s_bat: 5.0, d_bat: "75Wh" },
-    { name: "DELL Pro 14 Essential", price: 32980, url: "https://24h.pchome.com.tw/prod/DHAI86-A900JZELQ", ssd: "512G SSD", screen: "14.0\" FHD+ WVA", s_cpu: 3.5, d_cpu: "Core 5 120U", s_mem: 4.2, d_mem: "16G (雙槽DDR5)", s_port: 3.0, d_port: "1.54kg", s_bat: 3.6, d_bat: "54Wh" },
-    { name: "ACER Swift Lite (粉)", price: 30900, url: "https://24h.pchome.com.tw/prod/DHAEIV-A900IC19T", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Ultra 5-115U", s_mem: 4.8, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", s_bat: 3.3, d_bat: "50Wh" },
-    { name: "ASUS Vivobook 14 (白)", price: 26999, url: "https://24h.pchome.com.tw/prod/DHAFPQ-A900K1Y4D", ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 3.2, d_cpu: "Core 5 320", s_mem: 3.0, d_mem: "8G (單通道)", s_port: 3.5, d_port: "1.4kg", s_bat: 2.8, d_bat: "42Wh" },
-    { name: "ASUS Vivobook 14 (藍)", price: 26999, url: "https://24h.pchome.com.tw/prod/DHAFPQ-A900K1Y2K", ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 3.2, d_cpu: "Core 5 320", s_mem: 3.0, d_mem: "8G RAM", s_port: 3.5, d_port: "1.4kg", s_bat: 2.8, d_bat: "42Wh" },
-    { name: "ASUS ExpertBook B1", price: 29999, url: "https://24h.pchome.com.tw/prod/DHAFKD-1900JXYB5", ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 3.8, d_cpu: "Core 7 150U", s_mem: 4.2, d_mem: "16G (具SO-DIMM)", s_port: 3.5, d_port: "1.4kg", s_bat: 2.8, d_bat: "42Wh" },
-    { name: "ACER Swift Lite (銀/U7)", price: 33900, url: "https://24h.pchome.com.tw/prod/DHAEIK-A900JANMZ", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.3, d_cpu: "Ultra 7 155U", s_mem: 4.5, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", s_bat: 3.3, d_bat: "50Wh" },
-    { name: "ACER TravelMate (i5)", price: 33000, url: "https://24h.pchome.com.tw/prod/DHAEH4-A900GOK4Y", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "i5-1335U", s_mem: 4.2, d_mem: "16G DDR4", s_port: 3.5, d_port: "1.41kg", s_bat: 3.7, d_bat: "56Wh" },
-    { name: "DELL 14 (U5-225U)", price: 33990, url: "https://24h.pchome.com.tw/prod/DHAIBA-A900JY5Z0", ssd: "512G SSD", screen: "14.0\" FHD+ WVA", s_cpu: 4.1, d_cpu: "Ultra 5 225U", s_mem: 4.2, d_mem: "16G DDR5", s_port: 3.0, d_port: "1.54kg", s_bat: 2.7, d_bat: "41Wh" },
-    { name: "ACER TravelMate (120U)", price: 33990, url: "https://24h.pchome.com.tw/prod/DHAEFQ-A900IY36P", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Core 5 120U", s_mem: 4.2, d_mem: "16G DDR5", s_port: 3.0, d_port: "1.55kg", s_bat: 3.6, d_bat: "53Wh" },
-    { name: "DELL Pro Essential 14", price: 34990, url: "https://24h.pchome.com.tw/prod/DHAIBD-A900JXVNV", ssd: "512G SSD", screen: "14.0\" FHD+ IPS", s_cpu: 4.1, d_cpu: "Ultra 5 225U", s_mem: 4.2, d_mem: "16G (雙槽)", s_port: 2.5, d_port: "1.6kg", s_bat: 2.7, d_bat: "41Wh" },
-    { name: "ACER Swift 14 (40T)", price: 30900, url: "https://24h.pchome.com.tw/prod/DHAEJ3-A900J3VC4", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.2, d_cpu: "Ultra 5-226V (40T)", s_mem: 3.8, d_mem: "16G Onboard", s_port: 4.6, d_port: "1.24kg", s_bat: 4.4, d_bat: "65Wh" },
-    { name: "ACER Swift Lite (R5 AI)", price: 31900, url: "https://24h.pchome.com.tw/prod/DHAEJ8-A900JLKNM", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Ryzen 5 240", s_mem: 4.5, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", s_bat: 3.3, d_bat: "50Wh" },
-    { name: "ACER TravelMate 14 (R7)", price: 32618, url: "https://24h.pchome.com.tw/prod/DHAEFQ-A900IY448", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.8, d_cpu: "R7 PRO 7735U", s_mem: 4.2, d_mem: "16G DDR5", s_port: 3.5, d_port: "1.46kg", s_bat: 3.6, d_bat: "53Wh" },
-    { name: "ACER Swift 14 (32G)", price: 33618, url: "https://24h.pchome.com.tw/prod/DHAEI2-1900JKZBH", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.2, d_cpu: "Ultra 5-228V (40T)", s_mem: 4.5, d_mem: "32G Onboard", s_port: 4.6, d_port: "1.24kg", s_bat: 4.4, d_bat: "65Wh" },
-    { name: "ACER Swift 14 (OLED藍)", price: 33900, url: "https://24h.pchome.com.tw/prod/DHAEJ3-A900J3VCE", ssd: "512G SSD", screen: "14.0\" OLED鏡面", s_cpu: 4.2, d_cpu: "Ultra 5-226V", s_mem: 3.8, d_mem: "16G RAM", s_port: 4.6, d_port: "1.24kg", s_bat: 4.4, d_bat: "65Wh" },
-    { name: "DELL Pro Essential (1TB)", price: 34990, url: "https://24h.pchome.com.tw/prod/DHAIBD-A900JXVNV", ssd: "1TB SSD", screen: "14.0\" FHD+ WVA", s_cpu: 4.1, d_cpu: "Ultra 5 225U", s_mem: 4.2, d_mem: "16G DDR5", s_port: 2.5, d_port: "1.6kg", s_bat: 2.7, d_bat: "41Wh" }
+    { name: "ASUS ExpertBook 14 AI", price: 36499, ssd: "1TB (雙M.2)", screen: "14.0\" FHD+ IPS", s_cpu: 4.8, d_cpu: "R7 8840U (38T)", s_mem: 4.8, d_mem: "32G (可擴64G)", s_port: 4.2, d_port: "1.34kg", s_bat: 4.2, d_bat: "63Wh" },
+    { name: "ASUS Zenbook 14 OLED", price: 37499, ssd: "512G SSD", screen: "14.0\" WUXGA OLED", s_cpu: 4.5, d_cpu: "R AI 5 430 (50T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.8, d_port: "1.2kg", s_bat: 5.0, d_bat: "75Wh" },
+    { name: "LENOVO Yoga Slim 7i", price: 31118, ssd: "512G SSD", screen: "14.0\" OLED 600nits", s_cpu: 4.2, d_cpu: "Ultra 5 226V (40T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.8, d_port: "1.19kg", s_bat: 4.7, d_bat: "70Wh" },
+    { name: "ACER Aspire AI 14", price: 37400, ssd: "1TB SSD", screen: "14.0\" IPS 120Hz", s_cpu: 4.2, d_cpu: "SD X1 (45T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.5, d_port: "1.26kg", s_bat: 4.4, d_bat: "65Wh" },
+    { name: "ACER Swift Lite (1TB/999g)", price: 35400, ssd: "1TB (雙M.2)", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Ultra 5-115U", s_mem: 4.8, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", s_bat: 3.3, d_bat: "50Wh" },
+    { name: "ACER Swift 14 (Copilot+)", price: 36118, ssd: "512G SSD", screen: "14.0\" IPS 120Hz", s_cpu: 4.2, d_cpu: "Ultra 5-228V (40T)", s_mem: 4.5, d_mem: "32G (不可擴)", s_port: 4.6, d_port: "1.24kg", s_bat: 4.4, d_bat: "65Wh" },
+    { name: "HP 超品系列 14", price: 27400, ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 4.2, d_cpu: "Ultra 5-125H", s_mem: 4.2, d_mem: "16G (雙槽可擴)", s_port: 3.5, d_port: "1.4kg", s_bat: 2.7, d_bat: "41Wh" },
+    { name: "DELL 14 (1TB AI)", price: 37499, ssd: "1TB SSD", screen: "14.0\" FHD+ WVA", s_cpu: 4.1, d_cpu: "Ultra 5 225U", s_mem: 3.8, d_mem: "16G DDR5", s_port: 3.0, d_port: "1.54kg", s_bat: 2.7, d_bat: "41Wh" },
+    { name: "MSI Modern A14 AI+", price: 32400, ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 4.0, d_cpu: "Ryzen AI 5-330", s_mem: 4.2, d_mem: "16G (可擴32G)", s_port: 3.5, d_port: "1.4kg", s_bat: 3.1, d_bat: "46.8Wh" },
+    { name: "ACER Extensa 14", price: 32118, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.3, d_cpu: "Ultra 7-155H", s_mem: 4.2, d_mem: "16G (雙插槽)", s_port: 3.2, d_port: "1.47kg", s_bat: 3.6, d_bat: "55Wh" },
+    { name: "ACER TravelMate 14 (R5)", price: 33118, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "R5 PRO 7535U", s_mem: 4.2, d_mem: "16G (至64G)", s_port: 3.5, d_port: "1.46kg", s_bat: 3.6, d_bat: "53Wh" },
+    { name: "ASUS Vivobook S14 OLED", price: 36499, ssd: "512G SSD", screen: "14.0\" WUXGA OLED", s_cpu: 4.2, d_cpu: "Ultra 5 226V (40T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.3, d_port: "1.3kg", s_bat: 5.0, d_bat: "75Wh" },
+    { name: "DELL Pro 14 Essential", price: 35480, ssd: "512G SSD", screen: "14.0\" FHD+ WVA", s_cpu: 3.5, d_cpu: "Core 5 120U", s_mem: 4.2, d_mem: "16G (雙槽DDR5)", s_port: 3.0, d_port: "1.54kg", s_bat: 3.6, d_bat: "54Wh" },
+    { name: "ACER Swift Lite (粉)", price: 33400, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Ultra 5-115U", s_mem: 4.8, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", s_bat: 3.3, d_bat: "50Wh" },
+    { name: "ASUS Vivobook 14 (白)", price: 29499, ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 3.2, d_cpu: "Core 5 320", s_mem: 3.0, d_mem: "8G (單通道)", s_port: 3.5, d_port: "1.4kg", s_bat: 2.8, d_bat: "42Wh" },
+    { name: "ASUS Vivobook 14 (藍)", price: 29499, ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 3.2, d_cpu: "Core 5 320", s_mem: 3.0, d_mem: "8G RAM", s_port: 3.5, d_port: "1.4kg", s_bat: 2.8, d_bat: "42Wh" },
+    { name: "ASUS ExpertBook B1", price: 32499, ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 3.8, d_cpu: "Core 7 150U", s_mem: 4.2, d_mem: "16G (具SO-DIMM)", s_port: 3.5, d_port: "1.4kg", s_bat: 2.8, d_bat: "42Wh" },
+    { name: "ACER Swift Lite (銀/U7)", price: 36400, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.3, d_cpu: "Ultra 7 155U", s_mem: 4.5, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", s_bat: 3.3, d_bat: "50Wh" },
+    { name: "ACER TravelMate (i5)", price: 35500, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "i5-1335U", s_mem: 4.2, d_mem: "16G DDR4", s_port: 3.5, d_port: "1.41kg", s_bat: 3.7, d_bat: "56Wh" },
+    { name: "DELL 14 (U5-225U)", price: 36490, ssd: "512G SSD", screen: "14.0\" FHD+ WVA", s_cpu: 4.1, d_cpu: "Ultra 5 225U", s_mem: 4.2, d_mem: "16G DDR5", s_port: 3.0, d_port: "1.54kg", s_bat: 2.7, d_bat: "41Wh" },
+    { name: "ACER TravelMate (120U)", price: 36490, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Core 5 120U", s_mem: 4.2, d_mem: "16G DDR5", s_port: 3.0, d_port: "1.55kg", s_bat: 3.6, d_bat: "53Wh" },
+    { name: "DELL Pro Essential 14", price: 37490, ssd: "512G SSD", screen: "14.0\" FHD+ IPS", s_cpu: 4.1, d_cpu: "Ultra 5 225U", s_mem: 4.2, d_mem: "16G (雙槽)", s_port: 2.5, d_port: "1.6kg", s_bat: 2.7, d_bat: "41Wh" },
+    { name: "ACER Swift 14 (40T)", price: 33400, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.2, d_cpu: "Ultra 5-226V (40T)", s_mem: 3.8, d_mem: "16G Onboard", s_port: 4.6, d_port: "1.24kg", s_bat: 4.4, d_bat: "65Wh" },
+    { name: "ACER Swift Lite (R5 AI)", price: 34400, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Ryzen 5 240", s_mem: 4.5, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", s_bat: 3.3, d_bat: "50Wh" },
+    { name: "ACER TravelMate 14 (R7)", price: 35118, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.8, d_cpu: "R7 PRO 7735U", s_mem: 4.2, d_mem: "16G DDR5", s_port: 3.5, d_port: "1.46kg", s_bat: 3.6, d_bat: "53Wh" },
+    { name: "ACER Swift 14 (32G)", price: 36118, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.2, d_cpu: "Ultra 5-228V (40T)", s_mem: 4.5, d_mem: "32G Onboard", s_port: 4.6, d_port: "1.24kg", s_bat: 4.4, d_bat: "65Wh" },
+    { name: "ACER Swift 14 (OLED藍)", price: 36400, ssd: "512G SSD", screen: "14.0\" OLED鏡面", s_cpu: 4.2, d_cpu: "Ultra 5-226V", s_mem: 3.8, d_mem: "16G RAM", s_port: 4.6, d_port: "1.24kg", s_bat: 4.4, d_bat: "65Wh" },
+    { name: "DELL Pro Essential (1TB)", price: 37490, ssd: "1TB SSD", screen: "14.0\" FHD+ WVA", s_cpu: 4.1, d_cpu: "Ultra 5 225U", s_mem: 4.2, d_mem: "16G DDR5", s_port: 2.5, d_port: "1.6kg", s_bat: 2.7, d_bat: "41Wh" }
 ];
 
 const scoreConfig = {
@@ -317,7 +312,7 @@ function renderTable() {
         tbody.innerHTML += `
             <tr data-price="${lp.price}" data-val="${total}">
                 <td>
-                    <a href="${lp.url}" target="_blank" class="link">${lp.name}</a>
+                    <span class="prod-name">${lp.name}</span>
                     <span class="price-tag">$${lp.price.toLocaleString()}</span>
                     <div class="ref-text">💾 ${lp.ssd} ／ 🖥 ${lp.screen}</div>
                 </td>
@@ -346,16 +341,14 @@ function toggleFailFilter() {
     renderTable();
 }
 
-// 統一排序觸發器 (自動更新桌機 TH 與手機 Button 樣式)
 function triggerSort(colIndex) {
     if (currentSortCol === colIndex) {
         currentSortDir = (currentSortDir === "desc") ? "asc" : "desc";
     } else {
         currentSortCol = colIndex;
-        currentSortDir = (colIndex === 0) ? "asc" : "desc"; // 價格預設低到高，其餘分數高到低
+        currentSortDir = (colIndex === 0) ? "asc" : "desc";
     }
     
-    // 1. 更新桌機用 TH 欄位樣式
     document.querySelectorAll('th').forEach(th => {
         th.classList.remove('th-sort-asc', 'th-sort-desc');
     });
@@ -364,7 +357,6 @@ function triggerSort(colIndex) {
         activeTh.classList.add(currentSortDir === "asc" ? 'th-sort-asc' : 'th-sort-desc');
     }
 
-    // 2. 更新手機用獨立按鈕樣式
     document.querySelectorAll('.sort-btn').forEach(btn => {
         btn.classList.remove('active-asc', 'active-desc');
     });
@@ -376,7 +368,6 @@ function triggerSort(colIndex) {
     executeSort();
 }
 
-// 排序核心運算
 function executeSort() {
     const table = document.getElementById("laptopTable");
     const tbody = table.querySelector("tbody");
@@ -384,24 +375,16 @@ function executeSort() {
 
     rows.sort((a, b) => {
         let xVal, yVal;
-        
-        // 如果是依「價格」排序 (欄位 0)
         if (currentSortCol === 0) {
             xVal = parseFloat(a.getAttribute("data-price")) || 0;
             yVal = parseFloat(b.getAttribute("data-price")) || 0;
-            
-            // 當價格一模一樣時，自動觸發第二排序：總分高者在前
             if (xVal === yVal) {
                 let xTotal = parseFloat(a.getAttribute("data-val")) || 0;
                 let yTotal = parseFloat(b.getAttribute("data-val")) || 0;
                 return yTotal - xTotal; 
             }
-            
             return currentSortDir === "asc" ? xVal - yVal : yVal - xVal;
-        } 
-        
-        // 如果是依其他規格或加權總分排序
-        else {
+        } else {
             xVal = parseFloat(a.getElementsByTagName("TD")[currentSortCol].getAttribute("data-val")) || 0;
             yVal = parseFloat(b.getElementsByTagName("TD")[currentSortCol].getAttribute("data-val")) || 0;
             return currentSortDir === "asc" ? xVal - yVal : yVal - xVal;
