@@ -11,7 +11,7 @@
         h2 { color: #1e40af; text-align: center; margin-bottom: 25px; font-size: 2rem; }
         
         /* 控制面板區 */
-        .dashboard { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; border-top: 6px solid #2563eb; }
+        .dashboard { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border-top: 6px solid #2563eb; }
         .filter-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e5e7eb; flex-wrap: wrap; gap: 15px; }
         .filter-group { display: flex; align-items: center; gap: 12px; font-weight: bold; font-size: 1.1rem; }
         .filter-group input { padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 8px; width: 130px; font-size: 1rem; }
@@ -41,11 +41,19 @@
             transition: transform 0.2s; 
         }
         
-        /* 當開關被啟動時（排除不及格）的樣式變更 */
         .switch-container.checked .switch-track { background-color: #dc2626; }
         .switch-container.checked .switch-thumb { transform: translateX(28px); }
 
-        .weight-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; font-size: 1.1rem; }
+        /* 可折疊權重區塊樣式 */
+        .weight-collapsible { border: 1px solid #e5e7eb; border-radius: 10px; background: #f9fafb; overflow: hidden; margin-top: 10px; }
+        .weight-toggle-btn { width: 100%; background: #f1f5f9; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; font-size: 1.1rem; font-weight: bold; color: #334155; border: none; cursor: pointer; text-align: left; transition: background 0.2s; }
+        .weight-toggle-btn:hover { background: #e2e8f0; }
+        .weight-summary-text { font-size: 0.95rem; color: #2563eb; font-weight: bold; margin-left: 10px; background: #dbeafe; padding: 4px 12px; border-radius: 20px; }
+        .weight-arrow { font-size: 0.85rem; transition: transform 0.2s; color: #64748b; }
+        .weight-content { padding: 20px; display: none; background: #fff; border-top: 1px solid #e2e8f0; }
+        .weight-collapsible.expanded .weight-content { display: block; }
+        .weight-collapsible.expanded .weight-arrow { transform: rotate(180deg); }
+        .weight-content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: bold; font-size: 1.1rem; flex-wrap: wrap; gap: 10px; }
         .points-badge { background: #1e293b; color: #fbbf24; padding: 8px 20px; border-radius: 20px; font-weight: 900; border: 2px solid #fbbf24; font-size: 1.05rem; }
 
         /* 權重滑桿區 */
@@ -55,7 +63,7 @@
         .val-text { color: #2563eb; background: #dbeafe; padding: 2px 8px; border-radius: 10px; font-weight: 900; }
         .slider-item input[type="range"] { width: 100%; cursor: pointer; }
         
-        /* 📱 手機專用排序區塊 */
+        /* 手機專用排序區塊 */
         .sort-dashboard { display: none; background: #f8fafc; padding: 15px 20px; border-radius: 10px; border: 1px solid #e2e8f0; margin-top: 15px; }
         .sort-header { font-weight: bold; font-size: 1.05rem; color: #334155; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
         .sort-btn-group { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -66,18 +74,34 @@
         .sort-btn.active-desc { background: #eff6ff; color: #2563eb; border-color: #3b82f6; font-weight: 900; }
         .sort-btn.active-desc::after { content: " ▼"; }
 
-        /* 💡 燈號圖例說明的樣式 */
+        /* 📱 手機版專用：獨立欄位意義說明區塊 (預設桌機隱藏) */
+        .mobile-field-desc {
+            display: none;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+		.mobile-desc-title { font-weight: 900; font-size: 0.95rem; color: #166534; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+        .mobile-desc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 0.85rem; line-height: 1.3; color: #1f2937; }
+        .mobile-desc-item span { font-weight: 900; color: #15803d; }
+
+        /* 燈號圖例說明 */
         .legend-bar { background: #fff; padding: 15px 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); margin-bottom: 15px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
         .legend-title { font-weight: 800; font-size: 1.05rem; color: #4b5563; }
         .legend-group { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
         .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.95rem; font-weight: bold; }
 
-        /* 桌機表格配置與表頭吸頂 */
+        /* 桌機表格配置 */
         .table-wrapper { background: #fff; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         
+        /* 1. 全域 th 基礎樣式：維持原本的高厚度、大字體與帥氣黑底 */
         th { 
-            background-color: #1e293b; 
+            background-color: #1e293b !important; 
             color: #fff; 
             padding: 18px 12px; 
             text-align: left; 
@@ -85,43 +109,114 @@
             font-size: 1.05rem; 
             cursor: pointer; 
             transition: background 0.15s; 
+        }
+
+        /* 2. 第一列（標題排序列）：固定在最頂端 top: 0，獨立強制黑底防止穿透 */
+        #laptopTable thead tr:first-child th {
             position: sticky;
             top: 0;
-            z-index: 10;
+            z-index: 102; /* 最高層級，壓過所有內容 */
+            background-color: #1e293b !important;
         }
+
+        /* 3. 第二列（桌機說明列）：緊接在標題列下方（top: 59px），維持獨立背景防止穿透 */
+        #laptopTable thead tr.desktop-field-desc-row td {
+            position: sticky;
+            top: 59px; /* 精準對齊第一列 th 的總高度 */
+            z-index: 101; /* 次高層級，蓋過下方滾上來的 tbody */
+            background-color: #f8fafc !important; /* 獨立淺灰底色，若想要整塊都黑底可以改成 #1e293b */
+            box-shadow: inset 0 -2px 0 #cbd5e1; /* 做出與下方資料隔開的下底線 */
+        }
+
         th:hover { background-color: #334155; }
-        
         th.th-sort-asc::after { content: " ▲"; color: #fbbf24; font-weight: 900; }
         th.th-sort-desc::after { content: " ▼"; color: #fbbf24; font-weight: 900; }
         
         td { padding: 18px 12px; border-bottom: 1px solid #f3f4f6; vertical-align: top; font-size: 1.05rem; line-height: 1.4; }
         tr:nth-child(even) { background-color: #f9fafb; }
         
-        /* 🎨 四級距視覺燈號 */
+        /* 四級距視覺燈號 */
         .status-great { color: #16a34a; background-color: #fef08a; padding: 4px 10px; border-radius: 6px; font-weight: 900; display: inline-block; font-size: 1.2rem; } 
         .status-good { color: #16a34a; font-weight: 900; font-size: 1.2rem; display: inline-block; } 
         .status-pass { color: #1f2937; font-weight: bold; font-size: 1.15rem; display: inline-block; } 
         .status-low { color: #fef08a; background-color: #dc2626; padding: 4px 10px; border-radius: 6px; font-weight: 900; display: inline-block; font-size: 1.2rem; } 
         
+        /* 品項欄位排版設定 */
+        .prod-cell { display: flex; gap: 15px; align-items: flex-start; }
+        
+        /* 縮圖樣式調整 */
+        .prod-img { width: 85px; height: 85px; object-fit: contain; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.2s; }
+        .prod-img:hover { transform: scale(1.05); border-color: #2563eb; }        
+		
+        .prod-info { flex: 1; }
         .prod-name { color: #1e293b; font-weight: 800; display: block; margin-bottom: 4px; line-height: 1.3; font-size: 1.2rem; }
         .price-tag { color: #e11d48; font-weight: 900; font-size: 1.25rem; display: inline-block; margin-bottom: 6px; }
         .ref-text { color: #555d6d; line-height: 1.4; font-size: 0.95rem; font-weight: 500; margin-top: 3px; }
         .total-badge { font-size: 1.4rem; font-weight: 900; background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 10px; display: inline-block; }
 
-        /* 📱 手機板（RWD） */
+        /* 🔍 大圖彈出視窗 (Image Modal) */
+        .img-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+            pointer-events: none; 
+        }
+        .img-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        .img-modal-content {
+            max-width: 85%;
+            max-height: 85%;
+            background-color: #fff;
+            padding: 12px;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            object-fit: contain;
+            transform: scale(0.9);
+            transition: transform 0.2s ease-in-out;
+        }
+        .img-modal.show .img-modal-content {
+            transform: scale(1);
+        }
+
+        /* 手機板（RWD） */
         @media screen and (max-width: 768px) {
             body { padding: 10px; font-size: 16px; }
             .dashboard { padding: 15px; }
-            .filter-row { flex-direction: column; align-items: stretch; }
+            .filter-row { flex-direction: column; align-items: stretch; margin-bottom: 15px; padding-bottom: 10px; }
             .filter-group { justify-content: space-between; flex-wrap: wrap; }
             .filter-group input { width: 45%; padding: 12px; }
             
-            /* 手機板時讓 Switch 置中加寬 */
             .switch-container { width: 100%; margin-left: 0 !important; margin-top: 10px; justify-content: center; padding: 10px 0; background: #f8fafc; border-radius: 8px; border: 1px solid #cbd5e1; }
-            .points-badge { text-align: center; font-size: 1.1rem; }
             
+            .weight-toggle-btn { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .weight-summary-text { margin-left: 0; width: 100%; text-align: center; box-sizing: border-box; }
+            .weight-arrow { position: absolute; right: 15px; top: 22px; }
+            
+            .weight-content-header { flex-direction: column; align-items: stretch; text-align: center; }
+            .points-badge { text-align: center; font-size: 1.1rem; width: 100%; box-sizing: border-box; }
+
             .sort-dashboard { display: block; }
             .sort-btn { flex: 1 1 calc(50% - 10px); text-align: center; justify-content: center; padding: 10px; }
+
+            /* ✨ 手機版設定：顯示欄位意義說明區塊，並在下滑時黏在最頂端 */
+            .mobile-field-desc { 
+                display: block; 
+                position: sticky; 
+                top: 0; 
+                z-index: 500; 
+            }
 
             .legend-bar { padding: 12px; gap: 8px; flex-direction: column; align-items: flex-start; }
 
@@ -129,45 +224,14 @@
             thead { display: none; }
             .table-wrapper { background: transparent; box-shadow: none; overflow: visible; }
             
-            tr { 
-                background: #fff !important; 
-                margin-bottom: 25px; 
-                border: 2px solid #cbd5e1; 
-                border-radius: 14px; 
-                padding: 20px; 
-                box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-            }
-            
-            td { 
-                padding: 12px 0 !important; 
-                border-bottom: 1px dashed #e2e8f0; 
-                display: flex;
-                justify-content: space-between;
-                align-items: center; 
-                text-align: right;
-                font-size: 1.1rem;
-            }
-            
-            td:first-child { 
-                flex-direction: column;
-                align-items: flex-start;
-                text-align: left;
-                border-bottom: 3px solid #2563eb; 
-                padding-bottom: 16px !important;
-                margin-bottom: 10px;
-            }
-            
+            tr { background: #fff !important; margin-bottom: 25px; border: 2px solid #cbd5e1; border-radius: 14px; padding: 20px; box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
+            td { padding: 12px 0 !important; border-bottom: 1px dashed #e2e8f0; display: flex; justify-content: space-between; align-items: center; text-align: right; font-size: 1.1rem; }
+            td:first-child { display: block; text-align: left; border-bottom: 3px solid #2563eb; padding-bottom: 16px !important; margin-bottom: 10px; }
+            .prod-cell { gap: 12px; }
+            .prod-img { width: 75px; height: 75px; }
             .price-tag { display: block !important; margin-top: 6px; font-size: 1.35rem; }
 
-            td:last-child { 
-                border-bottom: none; 
-                padding-top: 16px !important; 
-                background-color: #f8fafc;
-                margin-top: 10px;
-                padding-left: 10px !important;
-                padding-right: 10px !important;
-                border-radius: 8px;
-            }
+            td:last-child { border-bottom: none; padding-top: 16px !important; background-color: #f8fafc; margin-top: 10px; padding-left: 10px !important; padding-right: 10px !important; border-radius: 8px; }
 
             td:nth-child(2)::before { content: "🧠 處理器分數："; font-weight: bold; color: #475569; }
             td:nth-child(3)::before { content: "⚡ 記憶體分數："; font-weight: bold; color: #475569; }
@@ -177,6 +241,9 @@
             
             td .ref-text { margin-top: 4px; text-align: right; display: block; }
             td:first-child .ref-text { text-align: left; margin-top: 6px; }
+
+            .img-modal { pointer-events: auto; }
+            .img-modal-content { max-width: 95%; max-height: 75%; }
         }
     </style>
 </head>
@@ -199,26 +266,41 @@
                     <span class="switch-label active" id="lbl_hideFail">排除 2 項以上不及格</span>
                 </div>
             </div>
-            <div class="points-badge">目前剩餘可分配點數：<span id="p_left">0</span>%</div>
         </div>
 
-        <div class="weight-header">⚙️ 評分權重調整 (總計100%)</div>
-        <div class="slider-grid">
-            <div class="slider-item">
-                <label>處理器 (及格4.0) <span class="val-text" id="v_cpu">35%</span></label>
-                <input type="range" id="w_cpu" min="0" max="100" step="5" value="35" oninput="adjustWeights('cpu')">
-            </div>
-            <div class="slider-item">
-                <label>記憶體 (及格4.2) <span class="val-text" id="v_mem">30%</span></label>
-                <input type="range" id="w_mem" min="0" max="100" step="5" value="30" oninput="adjustWeights('mem')">
-            </div>
-            <div class="slider-item">
-                <label>重量便攜 (及格3.5) <span class="val-text" id="v_port">30%</span></label>
-                <input type="range" id="w_port" min="0" max="100" step="5" value="30" oninput="adjustWeights('port')">
-            </div>
-            <div class="slider-item">
-                <label>續航力評估 (及格3.5) <span class="val-text" id="v_bat">5%</span></label>
-                <input type="range" id="w_bat" min="0" max="100" step="5" value="5" oninput="adjustWeights('bat')">
+        <div class="weight-collapsible" id="weightPanel">
+            <button class="weight-toggle-btn" onclick="toggleWeightPanel()" type="button" style="position: relative;">
+                <div>
+                    ⚙️ 評分權重自訂調整
+                    <span class="weight-summary-text" id="weightSummary">載入中...</span>
+                </div>
+                <span class="weight-arrow">▼</span>
+            </button>
+            
+            <div class="weight-content">
+                <div class="weight-content-header">
+                    <span>調整滑桿分配權重（總計 100%）：</span>
+                    <div class="points-badge">目前剩餘可分配點數：<span id="p_left">0</span>%</div>
+                </div>
+
+                <div class="slider-grid">
+                    <div class="slider-item">
+                        <label>處理器 <span class="val-text" id="v_cpu">35%</span></label>
+                        <input type="range" id="w_cpu" min="0" max="100" step="5" value="35" oninput="adjustWeights('cpu')">
+                    </div>
+                    <div class="slider-item">
+                        <label>記憶體 <span class="val-text" id="v_mem">30%</span></label>
+                        <input type="range" id="w_mem" min="0" max="100" step="5" value="30" oninput="adjustWeights('mem')">
+                    </div>
+                    <div class="slider-item">
+                        <label>重量便攜 <span class="val-text" id="v_port">30%</span></label>
+                        <input type="range" id="w_port" min="0" max="100" step="5" value="30" oninput="adjustWeights('port')">
+                    </div>
+                    <div class="slider-item">
+                        <label>續航力評估 <span class="val-text" id="v_bat">5%</span></label>
+                        <input type="range" id="w_bat" min="0" max="100" step="5" value="5" oninput="adjustWeights('bat')">
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -235,6 +317,16 @@
         </div>
     </div>
 
+    <div class="mobile-field-desc">
+        <div class="mobile-desc-title">💡 各評分欄位意義簡述：</div>
+        <div class="mobile-desc-grid">
+            <div class="mobile-desc-item"><span>🧠 處理器：</span>分數越高代表 AI 算力與多工處理更好</div>
+            <div class="mobile-desc-item"><span>⚡ 記憶體：</span>分數越高代表影片編輯與開分頁更順暢</div>
+            <div class="mobile-desc-item"><span>⚖️ 重量：</span>分數越高代表機身越輕巧、外出好攜帶</div>
+            <div class="mobile-desc-item"><span>🔋 續航力：</span>分數越高代表電池大、不插電用更久</div>
+        </div>
+    </div>
+
     <div class="legend-bar">
         <span class="legend-title">💡 燈號說明：</span>
         <div class="legend-group">
@@ -246,42 +338,62 @@
     </div>
 
     <div class="table-wrapper">
-        <table id="laptopTable">
-            <thead>
-                <tr>
-                    <th style="width: 32%;" id="th_0" onclick="triggerSort(0)">筆電型號名稱 / 價格</th>
-                    <th style="width: 15%;" id="th_1" onclick="triggerSort(1)">處理器分數</th>
-                    <th style="width: 15%;" id="th_2" onclick="triggerSort(2)">記憶體分數</th>
-                    <th style="width: 14%;" id="th_3" onclick="triggerSort(3)">重量分數</th>
-                    <th style="width: 14%;" id="th_4" onclick="triggerSort(4)">續航力分數</th>
-                    <th style="width: 10%;" id="th_5" class="th-sort-desc" onclick="triggerSort(5)">加權總分</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-            </tbody>
-        </table>
+		<table id="laptopTable">
+			<thead>
+				<tr>
+					<th style="width: 32%;" id="th_0" onclick="triggerSort(0)">筆電型號名稱 / 價格</th>
+					<th style="width: 15%;" id="th_1" onclick="triggerSort(1)">處理器分數</th>
+					<th style="width: 15%;" id="th_2" onclick="triggerSort(2)">記憶體分數</th>
+					<th style="width: 14%;" id="th_3" onclick="triggerSort(3)">重量分數</th>
+					<th style="width: 14%;" id="th_4" onclick="triggerSort(4)">續航力分數</th>
+					<th style="width: 10%;" id="th_5" class="th-sort-desc" onclick="triggerSort(5)">加權總分</th>
+				</tr>
+				<tr class="desktop-field-desc-row">
+					<td style="font-size: 0.85rem; color: #64748b; font-weight: bold; padding: 8px 12px; border-bottom: 2px solid #cbd5e1; text-align: left;">💡 欄位定義簡述</td>
+					<td style="font-size: 0.85rem; color: #64748b; font-weight: normal; padding: 8px 12px; border-bottom: 2px solid #cbd5e1; text-align: left;">🧠 分數越高代表 AI 算力與多工處理更好</td>
+					<td style="font-size: 0.85rem; color: #64748b; font-weight: normal; padding: 8px 12px; border-bottom: 2px solid #cbd5e1; text-align: left;">⚡ 分數越高代表影片編輯與開分頁更順暢</td>
+					<td style="font-size: 0.85rem; color: #64748b; font-weight: normal; padding: 8px 12px; border-bottom: 2px solid #cbd5e1; text-align: left;">⚖️ 分數越高代表機身越輕巧、外出好攜帶</td>
+					<td style="font-size: 0.85rem; color: #64748b; font-weight: normal; padding: 8px 12px; border-bottom: 2px solid #cbd5e1; text-align: left;">🔋 分數越高代表電池大、不插電用更久</td>
+					<td style="font-size: 0.85rem; color: #64748b; font-weight: normal; padding: 8px 12px; border-bottom: 2px solid #cbd5e1; text-align: left;">🏆 綜合加權總體評分</td>
+				</tr>
+			</thead>
+			<tbody id="tableBody"></tbody>
+		</table>
     </div>
+</div>
+
+<div id="imageModal" class="img-modal" onclick="closeModal()">
+    <img id="modalImg" class="img-modal-content" src="" alt="放大商品圖">
 </div>
 
 <script>
 const laptopData = [
-    { name: "ASUS ExpertBook 14 AI", price: 36499, ssd: "1TB (雙M.2)", screen: "14.0\" FHD+ IPS", s_cpu: 4.8, d_cpu: "R7 8840U (38T)", s_mem: 4.8, d_mem: "32G (可擴64G)", s_port: 4.2, d_port: "1.34kg", bat_cap: 63, p_draw: 1.0, d_bat: "63Wh" },
-    { name: "LENOVO Yoga Slim 7i", price: 31118, ssd: "512G SSD", screen: "14.0\" OLED 600nits", s_cpu: 4.2, d_cpu: "Ultra 5 226V (40T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.8, d_port: "1.19kg", bat_cap: 70, p_draw: 1.0, d_bat: "70Wh" },
-    { name: "ACER Swift Lite (1TB/999g)", price: 35400, ssd: "1TB (雙M.2)", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Ultra 5-115U", s_mem: 4.8, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", bat_cap: 50, p_draw: 1.2, d_bat: "50Wh" },
-    { name: "ACER Swift 14 (Copilot+)", price: 36118, ssd: "512G SSD", screen: "14.0\" IPS 120Hz", s_cpu: 4.2, d_cpu: "Ultra 5-228V (40T)", s_mem: 4.5, d_mem: "32G (不可擴)", s_port: 4.6, d_port: "1.24kg", bat_cap: 65, p_draw: 1.0, d_bat: "65Wh" },
-    { name: "HP 超品系列 14", price: 27400, ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 4.2, d_cpu: "Ultra 5-125H", s_mem: 4.2, d_mem: "16G (雙槽可擴)", s_port: 3.5, d_port: "1.4kg", bat_cap: 41, p_draw: 1.4, d_bat: "41Wh" },
-    { name: "ACER Extensa 14", price: 32118, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.3, d_cpu: "Ultra 7-155H", s_mem: 4.2, d_mem: "16G (雙插槽)", s_port: 3.2, d_port: "1.47kg", bat_cap: 55, p_draw: 1.4, d_bat: "55Wh" },
-    { name: "ASUS Vivobook S14 OLED", price: 36499, ssd: "512G SSD", screen: "14.0\" WUXGA OLED", s_cpu: 4.2, d_cpu: "Ultra 5 226V (40T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.3, d_port: "1.3kg", bat_cap: 75, p_draw: 1.0, d_bat: "75Wh" },
-    { name: "ACER Swift Lite (銀/U7)", price: 36400, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.3, d_cpu: "Ultra 7 155U", s_mem: 4.5, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", bat_cap: 50, p_draw: 1.2, d_bat: "50Wh" },
-    { name: "MSI Modern A14 AI+", price: 32400, ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 4.0, d_cpu: "Ryzen AI 5-330", s_mem: 4.2, d_mem: "16G (可擴32G)", s_port: 3.5, d_port: "1.4kg", bat_cap: 46.8, p_draw: 1.1, d_bat: "46.8Wh" },
-    { name: "ACER TravelMate (i5)", price: 35500, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "i5-1335U", s_mem: 4.2, d_mem: "16G DDR4", s_port: 3.5, d_port: "1.41kg", bat_cap: 56, p_draw: 1.5, d_bat: "56Wh" },
-    { name: "ACER Swift 14 (40T)", price: 33400, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.2, d_cpu: "Ultra 5-226V (40T)", s_mem: 3.8, d_mem: "16G Onboard", s_port: 4.6, d_port: "1.24kg", bat_cap: 65, p_draw: 1.0, d_bat: "65Wh" },
-    { name: "ACER TravelMate 14 (R7)", price: 35118, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.8, d_cpu: "R7 PRO 7735U", s_mem: 4.2, d_mem: "16G DDR5", s_port: 3.5, d_port: "1.46kg", bat_cap: 53, p_draw: 1.5, d_bat: "53Wh" },
-    { name: "ACER Swift 14 (32G)", price: 36118, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.2, d_cpu: "Ultra 5-228V (40T)", s_mem: 4.5, d_mem: "32G Onboard", s_port: 4.6, d_port: "1.24kg", bat_cap: 65, p_draw: 1.0, d_bat: "65Wh" },
-    { name: "ACER Swift 14 (OLED藍)", price: 36400, ssd: "512G SSD", screen: "14.0\" OLED鏡面", s_cpu: 4.2, d_cpu: "Ultra 5-226V", s_mem: 3.8, d_mem: "16G RAM", s_port: 4.6, d_port: "1.24kg", bat_cap: 65, p_draw: 1.1, d_bat: "65Wh" },
-    { name: "ACER Swift Lite (粉)", price: 33400, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Ultra 5-115U", s_mem: 4.8, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", bat_cap: 50, p_draw: 1.2, d_bat: "50Wh" },
-    { name: "ACER Swift Lite (R5 AI)", price: 34400, ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Ryzen 5 240", s_mem: 4.5, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", bat_cap: 50, p_draw: 1.2, d_bat: "50Wh" },
-    { name: "ASUS ExpertBook B1", price: 32499, ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 3.8, d_cpu: "Core 7 150U", s_mem: 4.2, d_mem: "16G (具SO-DIMM)", s_port: 3.5, d_port: "1.4kg", bat_cap: 42, p_draw: 1.5, d_bat: "42Wh" },
+    { name: "ASUS Zenbook 14 OLED", price: 37499, img: "https://img.pchome.com.tw/cs/items/DHAFUUA900K0KML/000001_1778817540.jpg", ssd: "512G SSD", screen: "14.0\" WUXGA OLED", s_cpu: 4.5, d_cpu: "R AI 5 430 (50T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.8, d_port: "1.2kg", s_bat: 5.0, d_bat: "75Wh" },
+    { name: "LENOVO Yoga Slim 7i", price: 32490, img: "https://img.pchome.com.tw/cs/items/DHBF851900JXNBF/000001_1781055586.jpg", ssd: "512G SSD", screen: "14.0\" OLED 600nits", s_cpu: 4.2, d_cpu: "Ultra 5 226V (40T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.8, d_port: "1.19kg", s_bat: 4.7, d_bat: "70Wh" },
+    { name: "ACER Aspire AI 14", price: 37400, img: "https://img.pchome.com.tw/cs/items/DHAEILA900JHYII/000001_1764233070.jpg", ssd: "1TB SSD", screen: "14.0\" IPS 120Hz", s_cpu: 4.2, d_cpu: "SD X1 (45T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.5, d_port: "1.26kg", s_bat: 4.4, d_bat: "65Wh" },
+    { name: "ACER Swift Lite (1TB/999g)", price: 35400, img: "https://img.pchome.com.tw/cs/items/DHAEJAA900JIYTE/000001_1766043829.jpg", ssd: "1TB (雙M.2)", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Ultra 5-115U", s_mem: 4.8, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", s_bat: 3.3, d_bat: "50Wh" },
+    { name: "ACER Swift 14 (Copilot+)", price: 36118, img: "https://img.pchome.com.tw/cs/items/DHAEJ0A900JB6DV/000001_1760682393.jpg", ssd: "512G SSD", screen: "14.0\" IPS 120Hz", s_cpu: 4.2, d_cpu: "Ultra 5-228V (40T)", s_mem: 4.5, d_mem: "32G (不可擴)", s_port: 4.6, d_port: "1.24kg", s_bat: 4.4, d_bat: "65Wh" },
+    { name: "HP 超品系列 14", price: 27400, img: "https://img.pchome.com.tw/cs/items/DHAG4TA900JTY47/000001_1773894909.jpg", ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 4.2, d_cpu: "Ultra 5-125H", s_mem: 4.2, d_mem: "16G (雙槽可擴)", s_port: 3.5, d_port: "1.4kg", s_bat: 2.7, d_bat: "41Wh" },
+    { name: "DELL 14 (1TB AI)", price: 37499, img: "https://img.pchome.com.tw/cs/items/DHAIBAA900JVF8H/000001_1777955503.jpg", ssd: "1TB SSD", screen: "14.0\" FHD+ WVA", s_cpu: 4.1, d_cpu: "Ultra 5 225U", s_mem: 3.8, d_mem: "16G DDR5", s_port: 3.0, d_port: "1.54kg", s_bat: 2.7, d_bat: "41Wh" },
+    { name: "MSI Modern A14 AI+", price: 32400, img: "https://img.pchome.com.tw/cs/items/DHAK89A900K179H/000001_1779682222.jpg", ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 4.0, d_cpu: "Ryzen AI 5-330", s_mem: 4.2, d_mem: "16G (可擴32G)", s_port: 3.5, d_port: "1.4kg", s_bat: 3.1, d_bat: "46.8Wh" },
+    { name: "ACER Extensa 14", price: 32118, img: "https://img.pchome.com.tw/cs/items/DHAEFKA900J38UG/000001_1754011375.jpg", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.3, d_cpu: "Ultra 7-155H", s_mem: 4.2, d_mem: "16G (雙插槽)", s_port: 3.2, d_port: "1.47kg", s_bat: 3.6, d_bat: "55Wh" },
+    { name: "ACER TravelMate 14 (R5)", price: 33118, img: "https://img.pchome.com.tw/cs/items/DHAEFQA900IY43X/000001_1750903977.jpg", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "R5 PRO 7535U", s_mem: 4.2, d_mem: "16G (至64G)", s_port: 3.5, d_port: "1.46kg", s_bat: 3.6, d_bat: "53Wh" },
+    { name: "ASUS Vivobook S14 OLED", price: 36499, img: "https://img.pchome.com.tw/cs/items/DHAFSXA900K0KKS/000001_1778817030.jpg", ssd: "512G SSD", screen: "14.0\" WUXGA OLED", s_cpu: 4.2, d_cpu: "Ultra 5 226V (40T)", s_mem: 3.8, d_mem: "16G (不可擴)", s_port: 4.3, d_port: "1.3kg", s_bat: 5.0, d_bat: "75Wh" },
+    { name: "DELL Pro 14 Essential", price: 35480, img: "https://img.pchome.com.tw/cs/items/DHAI86A900JZELQ/000001_1778049462.jpg", ssd: "512G SSD", screen: "14.0\" FHD+ WVA", s_cpu: 3.5, d_cpu: "Core 5 120U", s_mem: 4.2, d_mem: "16G (雙槽DDR5)", s_port: 3.0, d_port: "1.54kg", s_bat: 3.6, d_bat: "54Wh" },
+    { name: "ACER Swift Lite (粉)", price: 33400, img: "https://img.pchome.com.tw/cs/items/DHAEIVA900IC19T/000001_1755686196.jpg", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Ultra 5-115U", s_mem: 4.8, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", s_bat: 3.3, d_bat: "50Wh" },
+    { name: "ASUS Vivobook 14 (白)", price: 29499, img: "https://img.pchome.com.tw/cs/items/DHAFPQA900K1Y4D/000001_1779893206.jpg", ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 3.2, d_cpu: "Core 5 320", s_mem: 3.0, d_mem: "8G (單通道)", s_port: 3.5, d_port: "1.4kg", s_bat: 2.8, d_bat: "42Wh" },
+    { name: "ASUS Vivobook 14 (藍)", price: 29499, img: "https://img.pchome.com.tw/cs/items/DHAFPQA900K1Y2K/000001_1779892282.jpg", ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 3.2, d_cpu: "Core 5 320", s_mem: 3.0, d_mem: "8G RAM", s_port: 3.5, d_port: "1.4kg", s_bat: 2.8, d_bat: "42Wh" },
+    { name: "ASUS ExpertBook B1", price: 32499, img: "https://img.pchome.com.tw/cs/items/DHAFKD1900JXYB5/000001_1778638029.jpg", ssd: "512G SSD", screen: "14.0\" FHD IPS", s_cpu: 3.8, d_cpu: "Core 7 150U", s_mem: 4.2, d_mem: "16G (具SO-DIMM)", s_port: 3.5, d_port: "1.4kg", s_bat: 2.8, d_bat: "42Wh" },
+    { name: "ACER Swift Lite (銀/U7)", price: 36400, img: "https://img.pchome.com.tw/cs/items/DHAEIKA900JANMZ/000001_1759197186.jpg", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.3, d_cpu: "Ultra 7 155U", s_mem: 4.5, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", s_bat: 3.3, d_bat: "50Wh" },
+    { name: "ACER TravelMate (i5)", price: 35500, img: "https://img.pchome.com.tw/cs/items/DHAEH4A900GOK4Y/000001_1696306037.jpg", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "i5-1335U", s_mem: 4.2, d_mem: "16G DDR4", s_port: 3.5, d_port: "1.41kg", s_bat: 3.7, d_bat: "56Wh" },
+    { name: "DELL 14 (U5-225U)", price: 36490, img: "https://img.pchome.com.tw/cs/items/DHAIBAA900JY5Z0/000001_1777021435.jpg", ssd: "512G SSD", screen: "14.0\" FHD+ WVA", s_cpu: 4.1, d_cpu: "Ultra 5 225U", s_mem: 4.2, d_mem: "16G DDR5", s_port: 3.0, d_port: "1.54kg", s_bat: 2.7, d_bat: "41Wh" },
+    { name: "DELL Pro Essential 14", price: 37490, img: "https://img.pchome.com.tw/cs/items/DHAIBDA900JXVNV/000001_1776848688.jpg", ssd: "512G SSD", screen: "14.0\" FHD+ IPS", s_cpu: 4.1, d_cpu: "Ultra 5 225U", s_mem: 4.2, d_mem: "16G (雙槽)", s_port: 2.5, d_port: "1.6kg", s_bat: 2.7, d_bat: "41Wh" },
+    { name: "ACER Swift 14 (40T)", price: 33400, img: "https://img.pchome.com.tw/cs/items/DHAEJ3A900J3VC4/000001_1760682670.jpg", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.2, d_cpu: "Ultra 5-226V (40T)", s_mem: 3.8, d_mem: "16G Onboard", s_port: 4.6, d_port: "1.24kg", s_bat: 4.4, d_bat: "65Wh" },
+    { name: "ACER Swift Lite (R5 AI)", price: 34400, img: "https://img.pchome.com.tw/cs/items/DHAEJ8A900JLKNM/000001_1767316058.jpg", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.5, d_cpu: "Ryzen 5 240", s_mem: 4.5, d_mem: "32G RAM", s_port: 5.0, d_port: "999g", s_bat: 3.3, d_bat: "50Wh" },
+    { name: "ACER TravelMate 14 (R7)", price: 35118, img: "https://img.pchome.com.tw/cs/items/DHAEFQA900IY448/000001_1750904310.jpg", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 3.8, d_cpu: "R7 PRO 7735U", s_mem: 4.2, d_mem: "16G DDR5", s_port: 3.5, d_port: "1.46kg", s_bat: 3.6, d_bat: "53Wh" },
+    { name: "ACER Swift 14 (32G)", price: 36118, img: "https://img.pchome.com.tw/cs/items/DHAEI21900JKZBH/000001_1781629469.jpg", ssd: "512G SSD", screen: "14.0\" WUXGA IPS", s_cpu: 4.2, d_cpu: "Ultra 5-228V (40T)", s_mem: 4.5, d_mem: "32G Onboard", s_port: 4.6, d_port: "1.24kg", s_bat: 4.4, d_bat: "65Wh" },
+    { name: "ACER Swift 14 (OLED藍)", price: 36400, img: "https://img.pchome.com.tw/cs/items/DHAEJ3A900J3VCE/000001_1754536318.jpg", ssd: "512G SSD", screen: "14.0\" OLED鏡面", s_cpu: 4.2, d_cpu: "Ultra 5-226V", s_mem: 3.8, d_mem: "16G RAM", s_port: 4.6, d_port: "1.24kg", s_bat: 4.4, d_bat: "65Wh" },
+    { name: "DELL Pro Essential (1TB)", price: 37490, img: "https://img.pchome.com.tw/cs/items/DHAIBDA900JXVNV/000001_1776848688.jpg", ssd: "1TB SSD", screen: "14.0\" FHD+ WVA", s_cpu: 4.1, d_cpu: "Ultra 5 225U", s_mem: 4.2, d_mem: "16G DDR5", s_port: 2.5, d_port: "1.6kg", s_bat: 2.7, d_bat: "41Wh" }
 ];
 
 const scoreConfig = {
@@ -292,12 +404,32 @@ const scoreConfig = {
 };
 
 let weights = { cpu: 35, mem: 30, port: 30, bat: 5 };
-
-// 🛠️ 關鍵修改二：預設值直接設為 true，一進入網頁就啟用排除模式
 let filterActive = true; 
-
 let currentSortCol = 5; 
 let currentSortDir = "desc"; 
+
+function openModal(imgSrc, event) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    modalImg.src = imgSrc;
+    modal.classList.add('show');
+}
+
+function closeModal() {
+    const modal = document.getElementById('imageModal');
+    modal.classList.remove('show');
+}
+
+function toggleWeightPanel() {
+    const panel = document.getElementById('weightPanel');
+    panel.classList.toggle('expanded');
+}
+
+function updateWeightSummary() {
+    /* ✨ 修改：移除了及格字眼與括號 */
+    const summaryText = `處理器 ${weights.cpu}% ／ 記憶體 ${weights.mem}% ／ 重量 ${weights.port}% ／ 續航 ${weights.bat}%`;
+    document.getElementById('weightSummary').innerText = summaryText;
+}
 
 function adjustWeights(type) {
     const val = parseInt(document.getElementById('w_' + type).value);
@@ -318,14 +450,8 @@ function adjustWeights(type) {
     document.getElementById('v_port').innerText = weights.port + '%';
     document.getElementById('v_bat').innerText = weights.bat + '%';
     
+    updateWeightSummary();
     renderTable();
-}
-
-function calculateBatteryScore(cap, draw) {
-    const efficiencyIndex = cap / draw;
-    let score = 2.5 + ((efficiencyIndex - (41/1.4)) / ((75/1.0) - (41/1.4))) * 2.5;
-    score = Math.max(1.0, Math.min(5.0, score));
-    return parseFloat(score.toFixed(1));
 }
 
 function renderTable() {
@@ -337,7 +463,7 @@ function renderTable() {
     laptopData.forEach(lp => {
         if (lp.price < minP || lp.price > maxP) return;
 
-        const computedBatScore = calculateBatteryScore(lp.bat_cap, lp.p_draw);
+        const computedBatScore = lp.s_bat;
 
         let failCount = 0;
         if (lp.s_cpu < scoreConfig.cpu.ok) failCount++;
@@ -360,19 +486,26 @@ function renderTable() {
             else return "status-low";                            
         };
 
-        let efficiencyText = lp.p_draw <= 1.0 ? "🎨 省電架構" : (lp.p_draw >= 1.4 ? "⚙️ 高耗能架構" : "⚖️ 平衡架構");
-
         tbody.innerHTML += `
             <tr data-price="${lp.price}" data-val="${total}">
                 <td>
-                    <span class="prod-name">${lp.name}</span>
-                    <span class="price-tag">$${lp.price.toLocaleString()}</span>
-                    <div class="ref-text">💾 ${lp.ssd} ／ 🖥 ${lp.screen}</div>
+                    <div class="prod-cell">
+                        <img src="${lp.img}" alt="${lp.name}" class="prod-img" 
+                             onclick="openModal('${lp.img}', event)" 
+                             onmouseenter="if(window.innerWidth > 768) openModal('${lp.img}', event)" 
+                             onmouseleave="if(window.innerWidth > 768) closeModal()"
+                             onerror="this.style.display='none'">
+                        <div class="prod-info">
+                            <span class="prod-name">${lp.name}</span>
+                            <span class="price-tag">$${lp.price.toLocaleString()}</span>
+                            <div class="ref-text">💾 ${lp.ssd} ／ 🖥 ${lp.screen}</div>
+                        </div>
+                    </div>
                 </td>
                 <td data-val="${lp.s_cpu}"><span class="score ${getColorClass(lp.s_cpu, 'cpu')}">${lp.s_cpu}</span><div class="ref-text">${lp.d_cpu}</div></td>
                 <td data-val="${lp.s_mem}"><span class="score ${getColorClass(lp.s_mem, 'mem')}">${lp.s_mem}</span><div class="ref-text">${lp.d_mem}</div></td>
                 <td data-val="${lp.s_port}"><span class="score ${getColorClass(lp.s_port, 'port')}">${lp.s_port}</span><div class="ref-text">${lp.d_port}</div></td>
-                <td data-val="${computedBatScore}"><span class="score ${getColorClass(computedBatScore, 'bat')}">${computedBatScore}</span><div class="ref-text">${lp.d_bat} (${efficiencyText})</div></td>
+                <td data-val="${computedBatScore}"><span class="score ${getColorClass(computedBatScore, 'bat')}">${computedBatScore}</span><div class="ref-text">${lp.d_bat}</div></td>
                 <td data-val="${total}"><span class="total-badge">${total}</span></td>
             </tr>
         `;
@@ -383,7 +516,6 @@ function renderTable() {
 
 function toggleFailFilter() {
     filterActive = !filterActive;
-    
     const container = document.getElementById('failFilterSwitch');
     const lblShowAll = document.getElementById('lbl_showAll');
     const lblHideFail = document.getElementById('lbl_hideFail');
@@ -455,6 +587,7 @@ function executeSort() {
 
 window.onload = function() {
     adjustWeights('cpu');
+    updateWeightSummary();
 };
 </script>
 
